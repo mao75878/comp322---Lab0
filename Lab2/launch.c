@@ -12,10 +12,10 @@ int main(int argc, char *argv[])
   
   if(child > 0)
   {
-  fprintf(stderr, "%s: $$ = %d\n", argv[1], pid); //The parent process prints the PID of the child on stderr
+  fprintf(stderr, "%s: $$ = %d\n", argv[1], child); //The parent process prints the PID of the child on stderr
   
   waitpid(child, &status, WUNTRACED);                 //The parent prints the return value of the child on stderr
-  fprintf(stderr. "%s: $? = %d\n, argv[1], status);   //(see waitpid(2))
+  fprintf(stderr, "%s: $? = %d\n", argv[1], status);   //(see waitpid(2))
   }
   
   else if(child == 0)
