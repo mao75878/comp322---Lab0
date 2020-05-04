@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <string.h>
+
 
 int find(int argc, char* argv[]) //To find the second argument
 {
@@ -25,7 +27,7 @@ int main(int argc, char *argv[])
   int pipe[2];
   int arg2;
   
-  find(argc, argv) = arg2;
+  arg2 = find(argc, argv)
   
   pipe(pipe); //The program allocates a pipe
   
@@ -69,8 +71,8 @@ int main(int argc, char *argv[])
       waitpid(child1, &status2, WUNTRACED);
     
       //The program prints the return val of the first child then the second child
-      fprintf(stderr, "child 1 $? = %d\n", argv[1], status1);
-      fprintf(stderr, "child 2 $? = %d\n", argv[arg2], status2);
+      fprintf(stderr, "child 1 %s: $? = %d\n", argv[1], status1);
+      fprintf(stderr, "child 2 %s: $? = %d\n", argv[arg2], status2);
     }
    else //If fork 2 fails
    {
