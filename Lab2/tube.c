@@ -4,9 +4,6 @@
 #include <sys/types.h>
 #include <string.h>
 
-#define WRITE 1
-#define READ 0
-
 int find(int argc, char* argv[]) //To find the second argument
 {
   int argCheck;
