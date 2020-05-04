@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
   int pipe[2];
   int arg2;
   
-  arg2 = find(argc, argv)
+  arg2 = find(argc, argv);
   
   pipe(pipe); //The program allocates a pipe
   
