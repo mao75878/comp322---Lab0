@@ -7,22 +7,82 @@
 #define WRITE 1
 #define READ 0
 
+int find(int argc, char* argv[]) //To find the second argument
+{
+  int argCheck;
+  for(int i = 0; i < argc; i++)
+  {
+    if(strcmp(argv[i], ",") == 0
+       {
+         argv[i] = NULL;
+         arg2 = i + 1;
+       }
+   }
+       return argCheck;
+ }
+       
 int main(int argc, char *argv[])
 {
   pid_t child1, child2;
   int status1, status2;
   int pipe[2];
+  int arg2;
   
-  child1 = fork();
+  find(argc, argv) = arg2;
+  
+  pipe(pipe); //The program allocates a pipe
+  
+  if(pipe(pipe) == -1)// If pipe fails
+  {
+    fprintf(stderr, "Pipe Error");
+    exit(EXIT_FAILURE);
+  }
+  
+  child1 = fork(); //The program forks 2 children 
   child2 = fork();
   
-  pipe(pipe);
+  if(child1 == 0) //The first child executes the 1st (Check for 1st child)
+  {
+    dup2(pipe[1], 1);
+    execve(argv[1], argv + 1, NULL);
+  }
   
-  waitpid(child1, &status1, WUNTRACED);
-  waitpid(child1, &status2, WUNTRACED);
+  else if(child1 < 0) //If fork 1 fails
+  {
+    printf("Fork Error");
+  }
   
-  fprintf(stderr, "child 1 %s: $$ = %d\n", child1);
-  fprintf(stderr, "child 2 %s: $$ = %d\n", child2);
+  //Checks for when child1 is > 0)
+  else{
+    if(child2 == 0) //Second child process executes the second process
+    {
+      dup2(pipe[0], 0);
+      execve(argv[arg2], argv + arg2, NULL);
+    }
+    else if(child2 > 0) //This is the parent
+    {
+    
+      fprintf(stderr, "child 1 %s: $$ = %d\n", argv[1], child1); //The parent process prints the PID of both children 
+      fprintf(stderr, "child 2 %s: $$ = %d\n", argv[arg2], child2);
+    
+      close(pipe[1]);  //The parent process closes access to the pipe
+      close(pipe[0]);
+    
+      waitpid(child1, &status1, WUNTRACED);
+      waitpid(child1, &status2, WUNTRACED);
+    
+      //The program prints the return val of the first child then the second child
+      fprintf(stderr, "child 1 $? = %d\n", argv[1], status1);
+      fprintf(stderr, "child 2 $? = %d\n", argv[arg2], status2);
+    }
+   else //If fork 2 fails
+   {
+     printf("Fork Error");
+   }
+         
+               
+     
+             
   
+   
   
-}
