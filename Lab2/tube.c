@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
   else if(child1 < 0) //If fork 1 fails
   {
     printf("Fork Error");
+    exit(EXIT_FAILURE);
   }
   
   //Checks for when child1 is > 0)
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
    else //If fork 2 fails
    {
      printf("Fork Error");
+     exit(EXIT_FAILURE);
    }
   }
 }
