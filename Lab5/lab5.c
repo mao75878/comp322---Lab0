@@ -28,6 +28,6 @@ if(argc == 2){
   getOffset(address, pSize); //explained above
 }
   else{
-    printf("Error: Wrong # of args");
+    printf("Error: Wrong # of args\n");
   }  
 }
