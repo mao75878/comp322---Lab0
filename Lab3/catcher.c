@@ -4,6 +4,7 @@
 #include <sys/times.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 static int caught = 0;
 static int terminate = 0;
@@ -48,7 +49,7 @@ void checkSig(int argc, char **argv) //The program registers a handler for every
   {
     for(int j = 0; j < 27; j++)
     {
-      if(strcmp(argv[i], signals[j] == 0){
+      if(strcmp(argv[i], signals[j] == 0)){
         signal(j + 1, handler);
       }
       if(signal(j + 1, handler) == SIG_ERR){
@@ -59,6 +60,7 @@ void checkSig(int argc, char **argv) //The program registers a handler for every
   while (terminate < 3){
   pause();
   }
+}
   
   //The program emits a final status message to stderr that indicates the # of signals caught       
   fprintf(stderr, "catcher: Total signals count = %d\n", caught);
@@ -69,7 +71,7 @@ void checkSig(int argc, char **argv) //The program registers a handler for every
   int main(int argc, char** argv)
 {
   showPID();
-  checksig(argc, argv);
+  checkSig(argc, argv);
 
   return 0;
 }
