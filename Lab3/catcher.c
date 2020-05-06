@@ -8,7 +8,7 @@
 
 static int caught = 0;
 static int terminate = 0;
-static char *signals[27] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "IOT", "BUS", "FPE",
+static const char *signals[27] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "IOT", "BUS", "FPE",
                             "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT",
                             "CHLD", "CONT", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ",
                             "VTALRM", "PROF", "WINCH"};
@@ -37,7 +37,7 @@ void handler(int num) //Handler emits a line to stdout
   else if(num == SIGUSR2){
     fprintf(stdout, "SIGUSR2 caught at %ld\n", seconds);
   }else{
-    fprintf(stdout, "SIG%s caught at  %ld\n", seconds);
+    fprintf(stdout, "SIG%s caught at  %ld\n",signals[num - 1], seconds);
   }
   caught++;
 }
@@ -60,7 +60,7 @@ void checkSig(int argc, char **argv) //The program registers a handler for every
   while (terminate < 3){
   pause();
   }
-}
+
   
   //The program emits a final status message to stderr that indicates the # of signals caught       
   fprintf(stderr, "catcher: Total signals count = %d\n", caught);
