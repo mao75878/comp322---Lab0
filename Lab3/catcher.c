@@ -6,6 +6,7 @@
 #include <string.h>
 #include <time.h>
 
+
 static int caught = 0;
 static int terminate = 0;
 static const char *signals[27] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "IOT", "BUS", "FPE",
@@ -45,15 +46,17 @@ void handler(int num) //Handler emits a line to stdout
     
 void checkSig(int argc, char **argv) //The program registers a handler for every for each argument (signal(2))
 {
-  for(int i = 1; i < argc; i++)
-  {
-    for(int j = 0; j < 27; j++)
-    {
-      if(strcmp(argv[i], signals[j] == 0)){
-        signal(j + 1, handler);
+  for(int i = 1; i < argc; i++){
+    for(int j = 0; j < 27; j++){
+      
+      if(strcmp(argv[i], "USR1") == 0){
+        signal(SIGUSR1, handler);
       }
-      if(signal(j + 1, handler) == SIG_ERR){
-        fprintf(stderr, "signal error\n");
+      if(strcmp(argv[i], "USR2") == 0){
+        signal(SIGUSR2, handler);
+      }
+      else{
+        signal(j + 1, handler);
       }
     }
   }
@@ -61,11 +64,9 @@ void checkSig(int argc, char **argv) //The program registers a handler for every
   pause();
   }
 
-  
   //The program emits a final status message to stderr that indicates the # of signals caught       
   fprintf(stderr, "catcher: Total signals count = %d\n", caught);
-     
-  exit(EXIT_SUCCESS); //Program gracefully terminates after 3 succesve SIGTERM signals
+    
 }         
          
   int main(int argc, char** argv)
