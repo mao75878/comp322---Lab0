@@ -26,8 +26,8 @@ if(argc == 2){
   printf("The address %d contains:\n", address); //prints address
   getpNum(address, pSize); //explained above
   getOffset(address, pSize); //explained above
-
-  return 0;
 }
-}  
- 
+  else{
+    printf("Error: Wrong # of args");
+  }  
+}
