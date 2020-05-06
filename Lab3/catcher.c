@@ -63,10 +63,11 @@ void checkSig(int argc, char **argv) //The program registers a handler for every
   while (terminate < 3){
   pause();
   }
-
+ 
   //The program emits a final status message to stderr that indicates the # of signals caught       
   fprintf(stderr, "catcher: Total signals count = %d\n", caught);
-    
+ 
+  exit(EXIT_SUCCESS); //The program gracefully terminates
 }         
          
   int main(int argc, char** argv)
