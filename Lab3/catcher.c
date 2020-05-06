@@ -7,9 +7,9 @@
 
 static int caught = 0;
 static int terminate = 0;
-static char *signals[27] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE",
-                            "KILL", "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT",
-                            "CHLD", "CONT", "STOP", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ",
+static char *signals[27] = {"HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "IOT", "BUS", "FPE",
+                            "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT",
+                            "CHLD", "CONT", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ",
                             "VTALRM", "PROF", "WINCH"};
 
 void showPID() //The program includes a status line that includes its PID to stderr
