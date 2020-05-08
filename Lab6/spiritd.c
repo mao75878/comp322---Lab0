@@ -83,7 +83,7 @@ void sigHandler(int sig)
 }
   
 
-int main(int argc, char **argv)
+int main()
 {
   struct rlimit lim;
   
