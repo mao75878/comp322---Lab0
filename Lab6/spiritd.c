@@ -28,7 +28,7 @@ void sigHandler(int sig)
       kill(mole2, SIGKILL);
     }
     
-    kill(getpid());
+    kill(getpid(), SIGKILL);
   }
 }
 
