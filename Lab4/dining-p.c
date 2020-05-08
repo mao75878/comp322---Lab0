@@ -21,4 +21,20 @@ void think(int n){
   usleep(rand() % 1000000);
 }
 
+int main(int argc, char** argv){
+int philNum =
   
+  do{
+    wait(chopstick[i]);
+    wait(chopstick[(i+1)%5]);
+    
+    eat();
+    
+    signal(chopstick[i]);
+    signal(chopstick[(i+1)];
+           
+    think(); 
+    }
+}
+           
+    
