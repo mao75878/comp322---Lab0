@@ -8,46 +8,103 @@
 #include <sys/resource.h>
 #include <time.h>
 #include <limits.h>
+#include <wait.h>
 
 pid_t mole1;
 pid_t mole2;
+char* path;
 
 void sigHandler(int sig)
 {
   signal(sig, sigHandler);
   
-  if(sig == SIGTERM){
-    int mole1_stat = waitpid(mole1, &mole1_stat, WNOHANG);
-    int mole2_stat = waitpid(mole2, &mole2_stat, WNOHANG);
+  if(sig == SIGTERM){ //Upon SIGTERM the program kills all child processes and shutdowns 
     
-    if(mole1_stat == 0){
-      kill(mole1, SIGKILL);
+     //kills both child processes 
+    kill(mole1, SIGKILL);
+    kill(mole2, SIGKILL);
+    
+    //kills daemon
+    kill(getpid(), SIGKILL); 
+  }
+  
+  //Upon SIG_USR1 the program will
+  else if(sig == SIGUSR1)
+  {
+    kill(mole1, SIGKILL); //kill child process 1
+    create(); //randomly create either mole1 or mole2 if it does not already exist
+  }
+  
+  //Upon SIG_USR2 the program will
+  else if(sig == SIGUSR2)
+  {
+    kill(mole2, SIGKILL); //kill child process 2
+    create(); //randomly create either mole1 or mole2 if it does not already exist
+  }
+   
+    
+}
+  
+void create() 
+{
+  srand(time(0));
+  int random = rand() % 2;
+  char* molNum;
+  char *args[3]; 
+  
+  //When a new mole is created the following steps are followed:
+  if(random == 1)
+  {
+   mole1 = fork(); //fork a new process
+   molNum = "mole1"; //determine child process #
+   
+    if(mole1 == 0)
+   {
+     args[0] = path;
+     args[1] = moleNum;
+     args[2] = NULL;
+     execv(args[0], args); //execute the program mole
+   }
+    
+    else
+    {
+      mole2 = fork(); //fork a new processs
+      moleNum = "mole2"; //determine child process #
+      
+      if(mole2 == 0)
+      {
+        args[0] = path;
+        args[1] = molNum;
+        args[2] = NULL;
+        execv(args[0], args); //execute the program mole
+      }
     }
-    
-    if(mole2_stat == 0){
-      kill(mole2, SIGKILL);
-    }
-    
-    kill(getpid(), SIGKILL);
   }
 }
+    
 
 int main(int argc, char **argv)
 {
   struct rlimit lim;
   
-  umask(0); //Set the file creation mask to 0
+  umask(0); //1. Set the file creation mask to 0
   
   pid_t parent; 
-  parent = fork(); //Fork the parent
+  parent = fork(); //2. Fork the parent and have the parent exit
   
-  if(parent > 0){
+  if(parent > 0){ 
     exit(EXIT_SUCCESS);
   }
   
-  chdir("/");
+  setsid(); //3. create a new session
   
-  getrlimit(RLIMIT_NOFILE, &lim);  //Closes all unneeded file descriptors
+  chdir("/"); //4. Change the current working directory to be "/"
+  if(chdir("/") < 0){
+    printf("Failure to change directory to /\n");  
+    exit(EXIT_FAILURE);
+  }
+  
+  getrlimit(RLIMIT_NOFILE, &lim);  //5. Closes all unneeded file descriptors
   if(lim.rlim_max == RLIM_INFINITY){
     lim.rlim_max = 1024;
   }
@@ -56,7 +113,7 @@ int main(int argc, char **argv)
     close(i);
   }
   
-  open("/dev/null", O_RDWR);  //Reopen the standard file descriptors to map to /dev/null
+  open("/dev/null", O_RDWR);  //6. Reopen the standard file descriptors to map to /dev/null
   dup(0);
   dup(0);
 
