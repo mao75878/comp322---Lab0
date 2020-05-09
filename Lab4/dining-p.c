@@ -16,7 +16,7 @@
 static int finish;
 sem_t* side1;
 sem_t* side2;
-int finish = 0;
+static int finish;
 
 void eat(int n){
   fprintf(stdout,"Philosopher #%d is eating\n", n);
