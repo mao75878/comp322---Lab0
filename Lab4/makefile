@@ -7,30 +7,26 @@
 
 # EXECUTABLES is a Make Variable (similar to an environment variable) that lists all the
 # "executables" associated with the lab. 
-EXECUTABLES=dining-p launch-philosophers
-SRC=dining-p.c
-OBJ=dining-p.o
-
-SRC2=launch-philosophers.sh
+EXECUTABLES = dining-p
+SRC = dining-p.c
+OBJ = dining-p.o
 
 # The CC and CFLAGS variables are defined to ensure I'm using the native compiler and
 # that the correct command-line options are set
-CC=gcc
-CFLAGS=-g
+CC = gcc
+CFLAGS = -g -Wall -Wextra
 
 # Here is my default target for the Makefile.  When I type make, this first target will
 # be created. I.e., all the executables
 all: $(EXECUTABLES)
 
+dining-p: $(EXECUTABLES)
 
 # On the following lines (which _must_ start with a tab), are the commands I need to type -- 
 # each time my source file is modified.
-$(EXECUTABLES):
-launch-philosophers:
-  chmod +x $(SRC2)
-dining-p:
-	$(CC) $(CFLAGS) -c $(SRC)
-	$(CC) $(CFLAGS) -o $@ $(OBJ)
+$(EXECUTABLES): $(SRC)
+	$(CC) $(CFLAGS) -lpthread -c $(SRC)
+	$(CC) $(CFLAGS) -lpthread -o $@ $(OBJ)
 
 # By convention, I always have a target called
 # "clean" that I used to define all temporary
