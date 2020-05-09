@@ -14,8 +14,8 @@
 #define CS2 "/chopstick2"
 
 static int finish;
-sem_t* side1;
-sem_t* side2;
+sem_t* stick1;
+sem_t* stick2;
 static int finish;
 
 void eat(int n){
@@ -36,14 +36,14 @@ void sigHandler(int sig)
 
 void killSem()
 {
-  sem_close(side1);
-  sem_close(side2);
+  sem_close(stick1);
+  sem_close(stick2);
   
   sem_unlink(CS1);
   sem_unlink(CS2);
   
-  sem_destroy(side1);
-  sem_destroy(side2);
+  sem_destroy(stick1);
+  sem_destroy(stick2);
 }
 
 
@@ -66,18 +66,18 @@ int main(int argc, char** argv)
   {
     int cyCount = 0;
     signal(SIGTERM, sigHandler);
-    side1 = sem_open(CS1, O_CREAT, 0660, 1);
-    side2 = sem_open(CS2, O_CREAT, 0660, 1);
+    stick1 = sem_open(CS1, O_CREAT, 0660, 1);
+    stick2 = sem_open(CS2, O_CREAT, 0660, 1);
     
     do
     {
-      sem_wait(side1);
-      sem_wait(side2);
+      sem_wait(stick1);
+      sem_wait(stick2);
       
       eat(phil);
       
-      sem_post(side1);
-      sem_post(side2);
+      sem_post(stick1);
+      sem_post(stick2);
       
       think(phil);
       
