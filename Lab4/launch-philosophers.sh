@@ -1,33 +1,47 @@
+#compile using: chmod +x launch-philosophers.sh
+#run with ./______
+program=./dining-p
+seats=$1
+position=$2
+
+#prompt user to input more args
+if [ $# -gt 2 ];
+then
+echo "Error: input less arguments";
+exit 1;
+fi
+
+#if there's no number of seats given
+if [ -z ${seats} ]; 
+then
+echo "Enter a number of seats.";
+exit 1;
+fi
 
 
-EXEC=dining-p
-SEATS=$1
-child=$!
-pids=()
+#if there's no position number given
+if [ -z ${position} ];
+then
+echo "Enter a number for a philosopher.";
+exit 1;
+fi
 
 
-sig_handler(){
+#if there's less seats than philosophers/position given
+if [ ${seats} -lt ${position} ];
+then
+echo "Error: not enough seats.";
+exit 1;
+fi
 
-	for((i=0; $i<$SEATS; i+=1))
-	do
-		kill -TERM ${pids[i]} 2>/dev/null
-	done
-
-
-	exit 0
-}
-
-
-trap 'sig_handler' TERM
-
-
-for ((i=0; $i<$SEATS; i+=1))
-do
-
-
-	./$EXEC $SEATS $i &
-
-
-	pids[${i}]=$! #pid of children
+#prints positiona and cycles of
+#philosopher's PID.
+cycle=1
+while [ ${cycle} -le ${position} ] ; 
+      do
+      ${program} ${seats} ${cycle} &
+      
+      echo "Philosopher #${cycle}'s PID is" $!
+      cycle=$(( $cycle + 1 ))
+      
 done
-wait
