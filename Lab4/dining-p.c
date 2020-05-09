@@ -28,8 +28,6 @@ void think(int n){
   usleep(rand() % 1000000);
 }
 
-int cycles
-
 void sigHandler(int sig)
 {
   signal(SIGTERM, sigHandler);
@@ -49,7 +47,8 @@ void killSem()
 }
 
 
-int main(int argc, char** argv){
+int main(int argc, char** argv)
+{
  int seats = atoi(argv[1]);
  int phil = atoi(argv[2]);
  
@@ -66,7 +65,7 @@ int main(int argc, char** argv){
   else if(argc == 3)
   {
     int cyCount = 0;
-    signal(SIGTERM, sighandler);
+    signal(SIGTERM, sigHandler);
     side1 = sem_open(CS1, O_CREAT, 0660, 1);
     side2 = sem_open(CS2, O_CREAT, 0660, 1);
     
@@ -75,12 +74,12 @@ int main(int argc, char** argv){
       sem_wait(side1);
       sem_wait(side2);
       
-      eat(position);
+      eat(phil);
       
       sem_post(side1);
       sem_post(side2);
       
-      think(position);
+      think(phil);
       
       cyCount++;
     }
@@ -88,14 +87,12 @@ int main(int argc, char** argv){
   while(finish);
   if(finish != 1)
   {
-    fprintf(stderr, "Philospher #%d completed %d cycles.\n", position, cycles);
+    fprintf(stderr, "Philospher #%d completed %d cycles.\n", phil, cyCount);
   }
     
    killSem();
   }
-}
 
-
-exit(EXIT_SUCCESS);
+  return 0;
 }
     
