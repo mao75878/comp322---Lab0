@@ -30,7 +30,7 @@ void think(int n){
 
 void sigHandler(int sig)
 {
-  signal(SIGTERM, sigHandler);
+  signal(SIGTERM, sig);
   finish = 1;
 }
 
