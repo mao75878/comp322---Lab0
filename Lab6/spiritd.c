@@ -98,8 +98,8 @@ int main()
   
   setsid(); //3. create a new session
   
-  chdir("/"); //4. Change the current working directory to be "/"
-  if(chdir("/") < 0){
+  chdir("~/"); //4. Change the current working directory to be "/"
+  if(chdir("~/") < 0){
     printf("Failure to change directory to /\n");  
     exit(EXIT_FAILURE);
   }
